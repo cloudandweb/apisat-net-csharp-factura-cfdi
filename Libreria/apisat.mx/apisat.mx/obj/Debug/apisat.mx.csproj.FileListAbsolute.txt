@@ -1,9 +1,0 @@
-C:\Users\Ricardo\Documents\Visual Studio 2013\Projects\apisat\Libreria\apisat.mx\apisat.mx\bin\Debug\apisat.mx.dll
-C:\Users\Ricardo\Documents\Visual Studio 2013\Projects\apisat\Libreria\apisat.mx\apisat.mx\bin\Debug\apisat.mx.pdb
-C:\Users\Ricardo\Documents\Visual Studio 2013\Projects\apisat\Libreria\apisat.mx\apisat.mx\bin\Debug\Newtonsoft.Json.dll
-C:\Users\Ricardo\Documents\Visual Studio 2013\Projects\apisat\Libreria\apisat.mx\apisat.mx\bin\Debug\System.Net.Http.Formatting.dll
-C:\Users\Ricardo\Documents\Visual Studio 2013\Projects\apisat\Libreria\apisat.mx\apisat.mx\bin\Debug\Newtonsoft.Json.xml
-C:\Users\Ricardo\Documents\Visual Studio 2013\Projects\apisat\Libreria\apisat.mx\apisat.mx\bin\Debug\System.Net.Http.Formatting.xml
-C:\Users\Ricardo\Documents\Visual Studio 2013\Projects\apisat\Libreria\apisat.mx\apisat.mx\obj\Debug\apisat.mx.dll
-C:\Users\Ricardo\Documents\Visual Studio 2013\Projects\apisat\Libreria\apisat.mx\apisat.mx\obj\Debug\apisat.mx.pdb
-C:\Users\Ricardo\Documents\Visual Studio 2013\Projects\apisat\Libreria\apisat.mx\apisat.mx\obj\Debug\apisat.mx.csprojResolveAssemblyReference.cache
