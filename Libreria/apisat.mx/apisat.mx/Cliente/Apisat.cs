@@ -16,11 +16,13 @@ namespace apisat.mx
         public Apisat()
         {
             this.factura = new Factura();
+            this.cancelacion = new Cancelacion();
         }
 
         public Apisat(string rutabase)
         {
             this.factura = new Factura();
+            this.cancelacion = new Cancelacion();
             this.url = rutabase;
             this.CFDIUrn = "/api/1.0/factura";
         }
@@ -35,13 +37,25 @@ namespace apisat.mx
 
         public Factura factura { get; set; }
 
-        private Peticion peticion { 
+        public Cancelacion cancelacion { get; set; }
+
+        private Peticion peticionTimbre { 
             get 
             {
                 Peticion p = new Peticion();
                 p.factura = this.factura;
                 return p;
             } 
+        }
+
+        private Peticion peticionCancelacion
+        {
+            get 
+            {
+                Peticion p = new Peticion();
+                p.cancelacion = this.cancelacion;
+                return p;
+            }
         }
 
         public Respuesta Timbrar()
@@ -54,11 +68,21 @@ namespace apisat.mx
             return respuesta;
         }
 
-        
+        public Respuesta Cancelar() 
+        {
+            Respuesta respuesta = new Respuesta();
+            if (this.cancelacion.ValidaObjeto())
+                respuesta = cancelaCFDI();
+            else
+                throw new Exception("El objeto cancelacion contiene datos incorrectos");
+            
+
+            return respuesta;
+        }
 
         private Respuesta creaCFDI()
         {
-            string json = JsonConvert.SerializeObject(this.peticion);
+            string json = JsonConvert.SerializeObject(this.peticionTimbre);
             Respuesta respuesta = new Respuesta();
             using (var cliente = new WebClient())
             {
@@ -67,6 +91,19 @@ namespace apisat.mx
                 respuesta = JsonConvert.DeserializeObject<Respuesta>(json_respuesta);
             }
 
+            return respuesta;
+        }
+
+        private Respuesta cancelaCFDI()
+        {
+            string json = JsonConvert.SerializeObject(this.cancelacion);
+            Respuesta respuesta = new Respuesta();
+            using (var cliente = new WebClient()) 
+            {
+                cliente.Headers[HttpRequestHeader.ContentType] = "application/json";
+                string json_respuesta = cliente.UploadString(new Uri(string.Format("{0}{1}", this.url, this.CFDIUrn)), "DELETE", json);
+                respuesta = JsonConvert.DeserializeObject<Respuesta>(json_respuesta);
+            }
             return respuesta;
         }
 
@@ -123,6 +160,8 @@ namespace apisat.mx
             }
 
             public Factura factura { get; set; }
+
+            public Cancelacion cancelacion { get; set; }
         }
     }
 }

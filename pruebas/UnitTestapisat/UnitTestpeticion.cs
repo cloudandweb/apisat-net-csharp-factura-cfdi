@@ -8,6 +8,8 @@ namespace UnitTestapisat
     [TestClass]
     public class UnitTestpeticion
     {
+
+        #region Timbrado
         [TestMethod]
         public void Timbrado()
         {
@@ -124,5 +126,27 @@ namespace UnitTestapisat
 
             Assert.AreEqual(7100, factura.totales.total);
         }
+
+        #endregion
+
+        #region Cancelacion
+
+        [TestMethod]
+        public void CancelaFactura() 
+        {
+            Cancelacion cancelacion = new Cancelacion();
+            cancelacion.llaves.llave_publica = "key_f7f99088d457278fa1b059c34f01df5d";
+            cancelacion.llaves.llave_privada = "key_6b305bf82216f505d826e4c1cf8df5b2";
+            //El RFC debe coincidir con el UUID por seguridad. En sandbox no importa que datos se pongan
+            cancelacion.rfc = "RFC28289191";
+            cancelacion.uuid = "342343242324242442";
+
+            Apisat cfdi = new Apisat("http://sandbox.apisat.mx/");
+            cfdi.cancelacion = cancelacion;
+            Respuesta respuesta = cfdi.Cancelar();
+            Assert.AreEqual("200", respuesta.codigo);
+        }
+
+        #endregion
     }
 }

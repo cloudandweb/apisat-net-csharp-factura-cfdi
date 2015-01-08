@@ -52,6 +52,7 @@
     <Compile Include="Cliente\Apisat.cs" />
     <Compile Include="Elementos\Archivos.cs" />
     <Compile Include="Elementos\Articulo.cs" />
+    <Compile Include="Elementos\Cancelacion.cs" />
     <Compile Include="Elementos\Direccion.cs" />
     <Compile Include="Elementos\Factura.cs" />
     <Compile Include="Elementos\Emisor.cs" />
@@ -61,6 +62,7 @@
     <Compile Include="Elementos\Receptor.cs" />
     <Compile Include="Elementos\Totales.cs" />
     <Compile Include="Validaciones\Articulo.cs" />
+    <Compile Include="Validaciones\Cancelacion.cs" />
     <Compile Include="Validaciones\Direccion.cs" />
     <Compile Include="Validaciones\Emisor.cs" />
     <Compile Include="Validaciones\Factura.cs" />
