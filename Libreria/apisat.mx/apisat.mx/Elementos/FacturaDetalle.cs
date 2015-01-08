@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,20 +6,15 @@ using System.Threading.Tasks;
 
 namespace apisat.mx.Elementos
 {
-    public partial class Cancelacion
+    public partial class FacturaDetalle
     {
-
-        public Cancelacion() 
+        public FacturaDetalle() 
         {
             this.llaves = new ApiLlaves();
         }
 
         public ApiLlaves llaves { get; set; }
 
-        public string rfc { get; set; }
-
-        [JsonProperty("UUID")]
         public string uuid { get; set; }
-
     }
 }

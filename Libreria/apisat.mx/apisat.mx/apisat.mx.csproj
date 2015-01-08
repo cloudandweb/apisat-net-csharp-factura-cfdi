@@ -50,22 +50,26 @@
   <ItemGroup>
     <Compile Include="Calculos\CalculaTotales.cs" />
     <Compile Include="Cliente\Apisat.cs" />
+    <Compile Include="Elementos\ApiLlaves.cs" />
     <Compile Include="Elementos\Archivos.cs" />
     <Compile Include="Elementos\Articulo.cs" />
     <Compile Include="Elementos\Cancelacion.cs" />
     <Compile Include="Elementos\Direccion.cs" />
     <Compile Include="Elementos\Factura.cs" />
     <Compile Include="Elementos\Emisor.cs" />
+    <Compile Include="Elementos\FacturaDetalle.cs" />
     <Compile Include="Elementos\Opciones.cs" />
     <Compile Include="Elementos\Respuesta.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Elementos\Receptor.cs" />
     <Compile Include="Elementos\Totales.cs" />
+    <Compile Include="Respuestas\RespuestaFacturaDetalle.cs" />
     <Compile Include="Validaciones\Articulo.cs" />
     <Compile Include="Validaciones\Cancelacion.cs" />
     <Compile Include="Validaciones\Direccion.cs" />
     <Compile Include="Validaciones\Emisor.cs" />
     <Compile Include="Validaciones\Factura.cs" />
+    <Compile Include="Validaciones\FacturaDetalle.cs" />
     <Compile Include="Validaciones\Opciones.cs" />
     <Compile Include="Validaciones\Receptor.cs" />
     <Compile Include="Validaciones\Totales.cs" />
