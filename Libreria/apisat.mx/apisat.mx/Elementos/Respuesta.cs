@@ -13,7 +13,7 @@ namespace apisat.mx.Elementos
 
         }
 
-        public int codigo { get; set; }
+        public string codigo { get; set; }
 
         public string mensaje { get; set; }
 

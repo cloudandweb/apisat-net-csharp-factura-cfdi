@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 
 
 namespace apisat.mx.Elementos
 {
-    public class Receptor
+    public partial class Receptor
     {
 
         public Receptor()
@@ -13,7 +14,8 @@ namespace apisat.mx.Elementos
             this.direccion = new Direccion();
         }
 
-        public string nombre { get; set; }
+        [JsonProperty("nombre")]
+        public string razon_social { get; set; }
 
         public string rfc { get; set; }
 

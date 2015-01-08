@@ -59,6 +59,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Elementos\Receptor.cs" />
     <Compile Include="Elementos\Totales.cs" />
+    <Compile Include="Validaciones\Articulo.cs" />
+    <Compile Include="Validaciones\Direccion.cs" />
+    <Compile Include="Validaciones\Emisor.cs" />
+    <Compile Include="Validaciones\Factura.cs" />
+    <Compile Include="Validaciones\Opciones.cs" />
+    <Compile Include="Validaciones\Receptor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

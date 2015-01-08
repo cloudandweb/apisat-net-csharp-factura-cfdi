@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace apisat.mx.Elementos
 {
-    public class Articulo
+    public partial class Articulo
     {
         public string id { get; set; }
 

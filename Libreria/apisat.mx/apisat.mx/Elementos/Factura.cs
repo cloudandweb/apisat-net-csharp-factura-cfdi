@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace apisat.mx.Elementos
 {
-    public class Factura
+    public partial class Factura
     {
         public Factura()
         {
@@ -27,10 +27,9 @@ namespace apisat.mx.Elementos
 
         public Totales totales { get; set; }
 
-        public bool Validar()
-        {
-
-            return true;
-        }
+        
+        
     }
+
+    
 }
