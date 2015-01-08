@@ -48,17 +48,13 @@ namespace apisat.mx
         {
             Respuesta respuesta = new Respuesta();
             if (this.factura.ValidaObjeto())
-            {
                 respuesta = creaCFDI();
-            }
             else
-            {
                 throw new Exception("Faltan algunos atributos");
-            }
-            
-            
             return respuesta;
         }
+
+        
 
         private Respuesta creaCFDI()
         {

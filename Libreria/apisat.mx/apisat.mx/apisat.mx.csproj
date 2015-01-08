@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Calculos\CalculaTotales.cs" />
     <Compile Include="Cliente\Apisat.cs" />
     <Compile Include="Elementos\Archivos.cs" />
     <Compile Include="Elementos\Articulo.cs" />
@@ -65,6 +66,7 @@
     <Compile Include="Validaciones\Factura.cs" />
     <Compile Include="Validaciones\Opciones.cs" />
     <Compile Include="Validaciones\Receptor.cs" />
+    <Compile Include="Validaciones\Totales.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

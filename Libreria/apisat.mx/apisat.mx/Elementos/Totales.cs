@@ -8,44 +8,39 @@ using System.Threading.Tasks;
 
 namespace apisat.mx.Elementos
 {
-    public  class Totales
+    public partial class Totales
     {
 
-        public double monto { get; set; }
+        public double? monto { get; set; }
 
-        public double agregado { get; set; }
-
-        [JsonIgnore]
-        public double iva { get; set; }
+        public double? agregado { get; set; }
 
         [JsonIgnore]
-        public double isr { get; set; }
+        public double? iva { get; set; }
 
         [JsonIgnore]
-        public double riva { get; set; }
+        public double? isr { get; set; }
 
-        public double total { get; set; }
+        [JsonIgnore]
+        public double? riva { get; set; }
+
+        public double? total { get; set; }
 
         [JsonProperty("isr")]
         public string isr_serializacion {
-            get { return isr.ToString("F2"); } 
-        }
-
-        public void Calcula()
-        {
-            
+            get { return Convert.ToDouble(isr).ToString("F2"); } 
         }
 
         [JsonProperty("iva")]
         public string iva_serializacion
         {
-            get { return iva.ToString("F2"); }
+            get { return Convert.ToDouble(iva).ToString("F2"); }
         }
 
         [JsonProperty("riva")]
         public string riva_serializacion
         {
-            get { return riva.ToString("F2"); }
+            get { return Convert.ToDouble(riva).ToString("F2"); }
         }
 
 

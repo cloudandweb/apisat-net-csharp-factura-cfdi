@@ -14,7 +14,7 @@ namespace apisat.mx.Elementos
             receptor.Valida();
             this.Valida();
             opciones.Valida();
-
+            totales.Valida();
             return true;
         }
 
