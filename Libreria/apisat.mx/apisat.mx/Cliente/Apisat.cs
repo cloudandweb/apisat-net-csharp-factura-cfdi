@@ -114,6 +114,8 @@ namespace apisat.mx
             using (var cliente = new WebClient())
             {
                 cliente.Headers[HttpRequestHeader.ContentType] = "application/json";
+                cliente.Headers["datos"] = json;
+                
                 string json_respuesta = cliente.UploadString(new Uri(string.Format("{0}{1}", this.url, this.CFDIUrn)) , json);
                 respuesta = JsonConvert.DeserializeObject<Respuesta>(json_respuesta);
             }
