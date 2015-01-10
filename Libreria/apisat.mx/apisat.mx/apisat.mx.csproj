@@ -75,6 +75,7 @@
     <Compile Include="Validaciones\Opciones.cs" />
     <Compile Include="Validaciones\Receptor.cs" />
     <Compile Include="Validaciones\Totales.cs" />
+    <Compile Include="Validaciones\Apisat.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -10,9 +10,9 @@ using System.Net;
 using System.Collections.Specialized;
 using apisat.mx.Respuestas;
 
-namespace apisat.mx
+namespace apisat.mx.Cliente
 {
-    public class Apisat
+    public partial class Apisat : ApiLlaves
     {
         public Apisat()
         {
@@ -38,6 +38,7 @@ namespace apisat.mx
             set;
         }
 
+         
         public Factura factura { get; set; }
 
         public Cancelacion cancelacion { get; set; }
@@ -77,8 +78,13 @@ namespace apisat.mx
 
         public RespuestaTimbrado Timbrar()
         {
+            //Estas lineas son temporales mientras se estandariza todo;
+            this.factura.emisor.llave_publica = this.llave_publica;
+            this.factura.emisor.llave_privada = this.llave_privada;
+            //=======================================================
+
             RespuestaTimbrado respuesta = new RespuestaTimbrado();
-            if (this.factura.ValidaObjeto())
+            if (this.factura.ValidaObjeto() && Validar())
                 respuesta = creaCFDI();
             else
                 throw new Exception("Faltan algunos atributos");
@@ -144,8 +150,8 @@ namespace apisat.mx
         {
             RespuestaFacturaDetalle respuesta = new RespuestaFacturaDetalle();
             using(var cliente = new WebClient()) {
-                cliente.Headers.Add("llave_publica", this.detalle.llaves.llave_publica);
-                cliente.Headers.Add("llave_privada", this.detalle.llaves.llave_privada);
+                cliente.Headers.Add("llave_publica", this.llave_publica);
+                cliente.Headers.Add("llave_privada", this.llave_privada);
               string consulta = cliente.DownloadString(url +
               string.Format("/api/1.0/factura/{0}", this.detalle.uuid));
 
@@ -156,50 +162,9 @@ namespace apisat.mx
             return respuesta;
         }
 
-        private string EnviaPeticion(string url, string json)
-        {
-            //todo este codigo actualmente funciona solo es cuestion de convertir los objetos correctamente.
-            //adicionalmente es necesario usar metodos async
-            //json = "{\"factura\":{\"emisor\":{\"llave_publica\":\"key_f7f99088d457278fa1b059c34f01df5d\",\"llave_privada\":\"key_6b305bf82216f505d826e4c1cf8df5b2\"},\"articulos\":[{\"id\":\"M090\",\"descripcion\":\"Monitor X 70\",\"precio\":\"9000.00\",\"cantidad\":\"4\",\"total\":\"36000.00\"}],\"receptor\":{\"nombre\":\"Paramount Permanent Mountain\",\"rfc\":\"PAPM930101816\",\"telefono\":\"+52 (664) 2183049\",\"direccion\":{\"calle\":\"Homero\",\"exterior\":\"480\",\"estado\":\"Distrito Federal\",\"ciudad\":\"Milpa Alta\",\"codigo_postal\":\"11560\",\"correo\":\"entradas\",\"nombre_contacto\":\"Miguez Hernadez\",\"interior\":\"string\",\"colonia\":\"Chapultepec Morales\"}},\"opciones\":{\"tipo_factura\":\"ingreso\",\"moneda\":\"MXN\",\"pago\":\"Efectivo\",\"forma_pago\":\"Pago en una sola exhibicion\"},\"totales\":{\"monto\":\"36000.00\",\"agregado\":\"16.00\",\"iva\":\"5760.00\",\"isr\":\"0.00\",\"riva\":\"0.00\",\"total\":\"14760.00\"}}}";
-            string jsoncancelacion = "{\"llaves\":{\"llave_publica\":\"key_f7f99088d457278fa1b059c34f01df5d\",\"llave_privada\":\"key_6b305bf82216f505d826e4c1cf8df5b2\"},\"rfc\":\"PAPM930101816\",\"UUID\":\"d9e27da0-e539-4dd4-a0e8-93e1bd64d07f\"}";
-            var cliente = new WebClient();
-            cliente.Headers[HttpRequestHeader.ContentType] = "application/json";
-            string respuesta = cliente.UploadString(url + "/api/1.0/factura", json);
-            string cancelacion = cliente.UploadString(url + "/api/1.0/factura", "DELETE", jsoncancelacion);
-           
-            string consulta = cliente.DownloadString(url +
-                string.Format("/api/1.0/factura?folio={0}&llave_privada={1}&llave_publica={2}", "21212112", "key_6b305bf82216f505d826e4c1cf8df5b2", "key_f7f99088d457278fa1b059c34f01df5d"));
-            return string.Empty;
-        }
+        
 
-        private static async Task RealizaPeticion(string url, Peticion peticion)
-        {
-            //http://stackoverflow.com/questions/6178918/silverlight-4-0-using-webclient-uploadstringasync-post-request-to-net-4-webser
-            string json = JsonConvert.SerializeObject(peticion);
-            //json = "{\"factura\":{\"emisor\":{\"llave_publica\":\"key_f7f99088d457278fa1b059c34f01df5d\",\"llave_privada\":\"key_6b305bf82216f505d826e4c1cf8df5b2\"},\"articulos\":[{\"id\":\"M090\",\"descripcion\":\"Monitor X 70\",\"precio\":\"9000.00\",\"cantidad\":\"4\",\"total\":\"36000.00\"}],\"receptor\":{\"nombre\":\"Paramount Permanent Mountain\",\"rfc\":\"PAPM930101816\",\"telefono\":\"+52 (664) 2183049\",\"direccion\":{\"calle\":\"Homero\",\"exterior\":\"480\",\"estado\":\"Distrito Federal\",\"ciudad\":\"Milpa Alta\",\"codigo_postal\":\"11560\",\"correo\":\"entradas\",\"nombre_contacto\":\"Miguez Hernadez\",\"interior\":\"string\",\"colonia\":\"Chapultepec Morales\"}},\"opciones\":{\"tipo_factura\":\"ingreso\",\"moneda\":\"MXN\",\"pago\":\"Efectivo\",\"forma_pago\":\"Pago en una sola exhibicion\"},\"totales\":{\"monto\":\"36000.00\",\"agregado\":\"16.00\",\"iva\":\"5760.00\",\"isr\":\"0.00\",\"riva\":\"0.00\",\"total\":\"14760.00\"}}}";
-            //string json = "{\"factura\":{\"emisor\":{\"llave_publica\":\"key_f7f99088d457278fa1b059c34f01df5d\",\"llave_privada\":\"key_6b305bf82216f505d826e4c1cf8df5b2\"},\"articulos\":[{\"id\":\"M090\",\"descripcion\":\"Monitor X 70\",\"precio\":\"9000.00\",\"cantidad\":\"4\",\"total\":\"36000.00\"}],\"receptor\":{\"nombre\":\"Paramount Permanent Mountain\",\"rfc\":\"PAPM930101816\",\"telefono\":\"+52 (664) 2183049\",\"direccion\":{\"calle\":\"Homero\",\"exterior\":\"480\",\"estado\":\"Distrito Federal\",\"ciudad\":\"Milpa Alta\",\"codigo_postal\":\"11560\",\"correo\":\"entradas\",\"nombre_contacto\":\"Miguez Hernadez\",\"interior\":\"string\",\"colonia\":\"Chapultepec Morales\"}},\"opciones\":{\"tipo_factura\":\"ingreso\",\"moneda\":\"MXN\",\"pago\":\"Efectivo\",\"forma_pago\":\"Pago en una sola exhibicion\"},\"totales\":{\"monto\":\"36000.00\",\"agregado\":\"16.00\",\"iva\":\"5760.00\",\"isr\":\"0.00\",\"riva\":\"0.00\",\"total\":\"14760.00\"}}}";
-            using (var cliente = new HttpClient())
-            {
-                cliente.BaseAddress = new Uri(url);
-                cliente.DefaultRequestHeaders.Accept.Clear();
-                cliente.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                
-
-                HttpResponseMessage res = await cliente.PostAsJsonAsync("/api/1.0/factura", json);
-               // cliente.pa
-                var respuesta_server = res.Content.ReadAsStringAsync();
-                string respuestafinal = respuesta_server.Result;
-                
-            
-           
-                if (res.IsSuccessStatusCode)
-                {
-                    var respuesta = res.RequestMessage;
-                    int x = 0;
-                }
-                
-            }
-        }
+        
 
         private class Peticion
         {

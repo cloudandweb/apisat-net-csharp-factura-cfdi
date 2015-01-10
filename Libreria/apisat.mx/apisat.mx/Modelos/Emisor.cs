@@ -7,11 +7,8 @@ using System.Threading.Tasks;
 
 namespace apisat.mx.Modelos
 {
-    public partial class Emisor
+    public partial class Emisor : ApiLlaves
     {
-        public string llave_privada { get; set; }
-
-        public string llave_publica { get; set; }
-
+        
     }
 }

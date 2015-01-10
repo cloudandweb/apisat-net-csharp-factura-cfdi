@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using apisat.mx;
 using apisat.mx.Modelos;
 using apisat.mx.Respuestas;
+using apisat.mx.Cliente;
 
 namespace UnitTestapisat
 {
@@ -16,8 +17,8 @@ namespace UnitTestapisat
         {
             
             Factura factura = new Factura();
-            factura.emisor.llave_publica = "key_f7f99088d457278fa1b059c34f01df5d";
-            factura.emisor.llave_privada = "key_6b305bf82216f505d826e4c1cf8df5b2";
+            //factura.emisor.llave_publica = "key_f7f99088d457278fa1b059c34f01df5d";
+            //factura.emisor.llave_privada = "key_6b305bf82216f505d826e4c1cf8df5b2";
             
             factura.receptor.direccion.calle = "Olas altas";
             factura.receptor.direccion.ciudad = "Tijuana";
@@ -52,6 +53,8 @@ namespace UnitTestapisat
 
             Apisat cfdi = new Apisat("http://sandbox.apisat.mx/");
             cfdi.factura = factura;
+            cfdi.llave_publica = "key_f7f99088d457278fa1b059c34f01df5d";
+            cfdi.llave_privada = "key_6b305bf82216f505d826e4c1cf8df5b2";
             RespuestaTimbrado respuesta = cfdi.Timbrar();
             Assert.AreEqual("200", respuesta.codigo);
 
@@ -65,9 +68,7 @@ namespace UnitTestapisat
         {
            
                 Factura factura = new Factura();
-                factura.emisor.llave_publica = "key_f7f99088d457278fa1b059c34f01df5d";
-                factura.emisor.llave_privada = "key_6b305bf82216f505d826e4c1cf8df5b2";
-
+               
                 factura.receptor.direccion.calle = "Olas altas";
                 factura.receptor.direccion.ciudad = "Tijuana";
                 factura.receptor.direccion.codigo_postal = "22440";

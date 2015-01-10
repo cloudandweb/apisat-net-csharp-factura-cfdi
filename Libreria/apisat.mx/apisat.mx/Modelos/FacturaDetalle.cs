@@ -10,10 +10,8 @@ namespace apisat.mx.Modelos
     {
         public FacturaDetalle() 
         {
-            this.llaves = new ApiLlaves();
+            
         }
-
-        public ApiLlaves llaves { get; set; }
 
         public string uuid { get; set; }
     }
