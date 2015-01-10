@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace apisat.mx.Elementos
+namespace apisat.mx.Modelos
 {
     public partial class Opciones
     {

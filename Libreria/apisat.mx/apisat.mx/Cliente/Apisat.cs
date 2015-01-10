@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using apisat.mx.Elementos;
+using apisat.mx.Modelos;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Net;
 using System.Collections.Specialized;
+using apisat.mx.Respuestas;
 
 namespace apisat.mx
 {
@@ -74,9 +75,9 @@ namespace apisat.mx
             }
         }
 
-        public Respuesta Timbrar()
+        public RespuestaTimbrado Timbrar()
         {
-            Respuesta respuesta = new Respuesta();
+            RespuestaTimbrado respuesta = new RespuestaTimbrado();
             if (this.factura.ValidaObjeto())
                 respuesta = creaCFDI();
             else
@@ -84,9 +85,9 @@ namespace apisat.mx
             return respuesta;
         }
 
-        public Respuesta Cancelar() 
+        public RespuestaCancelacion Cancelar() 
         {
-            Respuesta respuesta = new Respuesta();
+            RespuestaCancelacion respuesta = new RespuestaCancelacion();
             if (this.cancelacion.ValidaObjeto())
                 respuesta = cancelaCFDI();
             else
@@ -107,31 +108,34 @@ namespace apisat.mx
             return respuesta;
         }
 
-        private Respuesta creaCFDI()
+        private RespuestaTimbrado creaCFDI()
         {
             string json = JsonConvert.SerializeObject(this.peticionTimbre);
-            Respuesta respuesta = new Respuesta();
+            RespuestaTimbrado respuesta = new RespuestaTimbrado();
             using (var cliente = new WebClient())
             {
                 cliente.Headers[HttpRequestHeader.ContentType] = "application/json";
                 cliente.Headers["datos"] = json;
                 
                 string json_respuesta = cliente.UploadString(new Uri(string.Format("{0}{1}", this.url, this.CFDIUrn)) , json);
-                respuesta = JsonConvert.DeserializeObject<Respuesta>(json_respuesta);
+                respuesta = JsonConvert.DeserializeObject<RespuestaTimbrado>(json_respuesta);
             }
 
             return respuesta;
         }
 
-        private Respuesta cancelaCFDI()
+        private RespuestaCancelacion cancelaCFDI()
         {
-            string json = JsonConvert.SerializeObject(this.cancelacion);
-            Respuesta respuesta = new Respuesta();
+            RespuestaCancelacion respuesta = new RespuestaCancelacion();
             using (var cliente = new WebClient()) 
             {
                 cliente.Headers[HttpRequestHeader.ContentType] = "application/json";
-                string json_respuesta = cliente.UploadString(new Uri(string.Format("{0}{1}", this.url, this.CFDIUrn)), "DELETE", json);
-                respuesta = JsonConvert.DeserializeObject<Respuesta>(json_respuesta);
+                cliente.Headers.Add("llave_publica", this.cancelacion.llaves.llave_publica);
+                cliente.Headers.Add("llave_privada", this.cancelacion.llaves.llave_privada);
+                cliente.Headers.Add("rfc", this.cancelacion.rfc);
+
+                string json_respuesta = cliente.UploadString(new Uri(string.Format("{0}{1}/{2}", this.url, this.CFDIUrn, this.cancelacion.uuid)), "DELETE", string.Empty);
+                respuesta = JsonConvert.DeserializeObject<RespuestaCancelacion>(json_respuesta);
             }
             return respuesta;
         }
@@ -140,8 +144,10 @@ namespace apisat.mx
         {
             RespuestaFacturaDetalle respuesta = new RespuestaFacturaDetalle();
             using(var cliente = new WebClient()) {
+                cliente.Headers.Add("llave_publica", this.detalle.llaves.llave_publica);
+                cliente.Headers.Add("llave_privada", this.detalle.llaves.llave_privada);
               string consulta = cliente.DownloadString(url +
-              string.Format("/api/1.0/factura?folio={0}&llave_privada={1}&llave_publica={2}", this.detalle.uuid, this.detalle.llaves.llave_privada, this.detalle.llaves.llave_publica));
+              string.Format("/api/1.0/factura/{0}", this.detalle.uuid));
 
               respuesta = JsonConvert.DeserializeObject<RespuestaFacturaDetalle>(consulta);
             }

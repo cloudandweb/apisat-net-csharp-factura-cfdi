@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 
 
-namespace apisat.mx.Elementos
+namespace apisat.mx.Modelos
 {
     public partial class Receptor
     {
