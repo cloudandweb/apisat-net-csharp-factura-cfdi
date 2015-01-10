@@ -1,7 +1,8 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using apisat.mx;
-using apisat.mx.Elementos;
+using apisat.mx.Modelos;
+using apisat.mx.Respuestas;
 
 namespace UnitTestapisat
 {
@@ -51,7 +52,7 @@ namespace UnitTestapisat
 
             Apisat cfdi = new Apisat("http://sandbox.apisat.mx/");
             cfdi.factura = factura;
-            Respuesta respuesta = cfdi.Timbrar();
+            RespuestaTimbrado respuesta = cfdi.Timbrar();
             Assert.AreEqual("200", respuesta.codigo);
 
 

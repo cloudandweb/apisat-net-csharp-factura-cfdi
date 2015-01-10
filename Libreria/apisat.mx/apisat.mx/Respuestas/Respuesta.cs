@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace apisat.mx.Elementos
+namespace apisat.mx.Respuestas
 {
-    public class Respuesta
+    public abstract class Respuesta
     {
         public Respuesta()
         {
@@ -17,8 +17,5 @@ namespace apisat.mx.Elementos
 
         public string mensaje { get; set; }
 
-        public Archivos archivos { get; set; }
-
-        public string uuid { get; set; }
     }
 }

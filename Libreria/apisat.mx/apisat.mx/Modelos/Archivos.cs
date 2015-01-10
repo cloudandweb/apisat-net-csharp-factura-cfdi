@@ -1,7 +1,7 @@
 ﻿using System;
 
 
-namespace apisat.mx.Elementos
+namespace apisat.mx.Modelos
 {
     public class Archivos
     {
