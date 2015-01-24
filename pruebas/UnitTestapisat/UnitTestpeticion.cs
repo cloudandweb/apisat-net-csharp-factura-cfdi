@@ -10,6 +10,8 @@ namespace UnitTestapisat
     [TestClass]
     public class UnitTestpeticion
     {
+        public const string mi_public_key = "key_f7f99088d457278fa1b059c34f01df5d";
+        public const string mi_private_key = "key_6b305bf82216f505d826e4c1cf8df5b2"; 
 
         #region Timbrado
         [TestMethod]
@@ -17,8 +19,6 @@ namespace UnitTestapisat
         {
             
             Factura factura = new Factura();
-            //factura.emisor.llave_publica = "key_f7f99088d457278fa1b059c34f01df5d";
-            //factura.emisor.llave_privada = "key_6b305bf82216f505d826e4c1cf8df5b2";
             
             factura.receptor.direccion.calle = "Olas altas";
             factura.receptor.direccion.ciudad = "Tijuana";
@@ -53,8 +53,8 @@ namespace UnitTestapisat
 
             Apisat cfdi = new Apisat("http://sandbox.apisat.mx/");
             cfdi.factura = factura;
-            cfdi.llave_publica = "key_f7f99088d457278fa1b059c34f01df5d";
-            cfdi.llave_privada = "key_6b305bf82216f505d826e4c1cf8df5b2";
+            cfdi.llave_publica = mi_public_key;
+            cfdi.llave_privada = mi_private_key;
             RespuestaTimbrado respuesta = cfdi.Timbrar();
             Assert.AreEqual("200", respuesta.codigo);
 
@@ -137,13 +137,13 @@ namespace UnitTestapisat
         public void CancelaFactura() 
         {
             Cancelacion cancelacion = new Cancelacion();
-            cancelacion.llaves.llave_publica = "key_f7f99088d457278fa1b059c34f01df5d";
-            cancelacion.llaves.llave_privada = "key_6b305bf82216f505d826e4c1cf8df5b2";
             //El RFC debe coincidir con el UUID por seguridad. En sandbox no importa que datos se pongan
             cancelacion.rfc = "RFC28289191";
             cancelacion.uuid = "342343242324242442";
 
-            Apisat cfdi = new Apisat("http://sandbox.apisat.mx/");
+            Apisat cfdi = new Apisat("http://sandbox.apisat.mx");
+            cfdi.llave_publica = mi_public_key;
+            cfdi.llave_privada = mi_private_key;
             cfdi.cancelacion = cancelacion;
             Respuesta respuesta = cfdi.Cancelar();
             Assert.AreEqual("200", respuesta.codigo);

@@ -31,7 +31,9 @@ namespace apisat.mx.Cliente
             this.detalle = new FacturaDetalle();
             this.url = rutabase;
             this.CFDIUrn = "/api/1.0/factura";
-            this.FormatoHash = "post@sandbox.apisat.mx/api/1.0/factura@http@{0}@{1}";
+            this.TimbrarFormatoHash = "post@sandbox.apisat.mx/api/1.0/factura@http@{0}@{1}";
+            this.CancelarFormatoHash = "delete@sandbox.apisat.mx/api/1.0/factura/{uuid}@http@{0}@{1}";
+           
         }
 
         public string url { get; set; }
@@ -42,7 +44,9 @@ namespace apisat.mx.Cliente
             set;
         }
 
-        public string FormatoHash { get; set; }
+        public string TimbrarFormatoHash { get; set; }
+
+        public string CancelarFormatoHash { get; set; }
 
          
         public Factura factura { get; set; }
@@ -130,24 +134,8 @@ namespace apisat.mx.Cliente
                 cliente.Headers["llave_publica"] = this.llave_publica;
                 string ts = DateTime.UtcNow.ToString("yyyy-MM-ddThh:mm:ss+00:00");
                 cliente.Headers["timestamp"] = ts; 
-                HMACSHA256 hmac = new HMACSHA256();
-                hmac.Key = Encoding.ASCII.GetBytes(this.llave_privada);
-                string ahashear = string.Format(this.FormatoHash, ts, this.llave_publica);
-                byte[] byteArray = Encoding.ASCII.GetBytes(ahashear);
-                //MemoryStream stream = new MemoryStream(byteArray);
-                byte[] hashValue = hmac.ComputeHash(byteArray);
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < hashValue.Length; i++)
-                {
-                    sb.Append(hashValue[i].ToString("x2"));
-                }
-                string hvalue = sb.ToString();
-                byte[] nuevo = Encoding.UTF8.GetBytes(hvalue);
-
-                string sello = Convert.ToBase64String(nuevo);
-                cliente.Headers["llave_privada"] = sello;
-                //post@sandbox.apisat.mx/api/1.0/factura@http@timestamp@llave_publica
-
+                string hashString = string.Format(this.TimbrarFormatoHash, ts, llave_publica);
+                cliente.Headers["llave_privada"] = HMAC256SELLO(hashString, ts, this.llave_publica, this.llave_privada);
                 string json_respuesta = cliente.UploadString(new Uri(string.Format("{0}{1}", this.url, this.CFDIUrn)) , json);
                 respuesta = JsonConvert.DeserializeObject<RespuestaTimbrado>(json_respuesta);
             }
@@ -161,9 +149,14 @@ namespace apisat.mx.Cliente
             using (var cliente = new WebClient()) 
             {
                 cliente.Headers[HttpRequestHeader.ContentType] = "application/json";
-                cliente.Headers.Add("llave_publica", this.cancelacion.llaves.llave_publica);
-                cliente.Headers.Add("llave_privada", this.cancelacion.llaves.llave_privada);
-                cliente.Headers.Add("rfc", this.cancelacion.rfc);
+                cliente.Headers["llave_publica"] = this.llave_publica;
+                string ts = DateTime.UtcNow.ToString("yyyy-MM-ddThh:mm:ss+00:00");
+                cliente.Headers["timestamp"] = ts;
+                string cancelhash = this.CancelarFormatoHash.Replace("{0}", ts).Replace("{1}", this.llave_publica);
+                cliente.Headers["llave_privada"] = HMAC256SELLO(cancelhash, ts, this.llave_publica, this.llave_privada);
+                cliente.Headers["rfc"] = this.cancelacion.rfc;
+                string otro = string.Format(this.TimbrarFormatoHash, ts, llave_publica);
+                string algo = string.Format("{0}{1}/{2}", this.url, this.CFDIUrn, this.cancelacion.uuid);
 
                 string json_respuesta = cliente.UploadString(new Uri(string.Format("{0}{1}/{2}", this.url, this.CFDIUrn, this.cancelacion.uuid)), "DELETE", string.Empty);
                 respuesta = JsonConvert.DeserializeObject<RespuestaCancelacion>(json_respuesta);
@@ -192,8 +185,7 @@ namespace apisat.mx.Cliente
         {
             HMACSHA256 hmac = new HMACSHA256();
             hmac.Key = Encoding.ASCII.GetBytes(llave_privada);
-            string ahashear = string.Format(this.FormatoHash, TimeStamp, llave_publica);
-            byte[] byteArray = Encoding.ASCII.GetBytes(ahashear);
+            byte[] byteArray = Encoding.ASCII.GetBytes(FormatoHash);
             byte[] hashValue = hmac.ComputeHash(byteArray);
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < hashValue.Length; i++)

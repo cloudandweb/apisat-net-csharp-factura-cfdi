@@ -10,10 +10,6 @@ namespace apisat.mx.Modelos
     {
         private void Valida()
         {
-            if (string.IsNullOrEmpty(this.llaves.llave_privada))
-                throw new Exception("La llave privada es obligatoria");
-            if (string.IsNullOrEmpty(this.llaves.llave_publica))
-                throw new Exception("La llave publica es obligatoria");
             if (string.IsNullOrEmpty(this.rfc))
                 throw new Exception("El RFC es obligatorio");
             if (string.IsNullOrEmpty(this.uuid))

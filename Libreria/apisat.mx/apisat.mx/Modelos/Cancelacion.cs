@@ -12,10 +12,8 @@ namespace apisat.mx.Modelos
 
         public Cancelacion() 
         {
-            this.llaves = new ApiLlaves();
-        }
 
-        public ApiLlaves llaves { get; set; }
+        }
 
         public string rfc { get; set; }
 
