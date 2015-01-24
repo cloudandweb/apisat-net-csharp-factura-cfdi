@@ -10,6 +10,7 @@ namespace UnitTestapisat
     [TestClass]
     public class UnitTestpeticion
     {
+        //reemplaza por tus llaves
         public const string mi_public_key = "key_f7f99088d457278fa1b059c34f01df5d";
         public const string mi_private_key = "key_6b305bf82216f505d826e4c1cf8df5b2"; 
 

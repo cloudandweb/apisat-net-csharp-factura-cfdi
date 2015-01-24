@@ -33,6 +33,7 @@ namespace apisat.mx.Cliente
             this.CFDIUrn = "/api/1.0/factura";
             this.TimbrarFormatoHash = "post@sandbox.apisat.mx/api/1.0/factura@http@{0}@{1}";
             this.CancelarFormatoHash = "delete@sandbox.apisat.mx/api/1.0/factura/{uuid}@http@{0}@{1}";
+            this.ConsultaHash = "get@sandbox.apisat.mx/api/1.0/factura/{uuid}@http@{0}@{1}";
            
         }
 
@@ -48,6 +49,7 @@ namespace apisat.mx.Cliente
 
         public string CancelarFormatoHash { get; set; }
 
+        public string ConsultaHash { get; set; }
          
         public Factura factura { get; set; }
 
@@ -169,7 +171,10 @@ namespace apisat.mx.Cliente
             RespuestaFacturaDetalle respuesta = new RespuestaFacturaDetalle();
             using(var cliente = new WebClient()) {
                 cliente.Headers.Add("llave_publica", this.llave_publica);
-                cliente.Headers.Add("llave_privada", this.llave_privada);
+                string ts = DateTime.UtcNow.ToString("yyyy-MM-ddThh:mm:ss+00:00");
+                cliente.Headers["timestamp"] = ts;
+                string hashString = this.ConsultaHash.Replace("{0}", ts).Replace("{1}", this.llave_publica);
+                cliente.Headers["llave_privada"] = HMAC256SELLO(hashString, ts, this.llave_publica, this.llave_privada);
               string consulta = cliente.DownloadString(url +
               string.Format("/api/1.0/factura/{0}", this.detalle.uuid));
 
